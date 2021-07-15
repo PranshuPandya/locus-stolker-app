@@ -1,0 +1,37 @@
+name: locus_stalker
+description: A live location tracker.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  animated_text_kit: ^4.2.1
+  cloud_firestore: ^2.3.0
+  cupertino_icons: ^1.0.3
+  firebase_auth: ^2.0.0
+  firebase_core: ^1.3.0
+  firebase_storage: ^9.0.0
+  font_awesome_flutter: ^9.1.0
+  geoflutterfire: ^3.0.1
+  geolocator: ^7.2.0+1
+  google_maps_flutter: ^2.0.6
+  google_sign_in: ^5.0.4
+  image_picker: ^0.8.1+3
+  location: ^4.3.0
+  progress_hud: ^1.1.0
+  shared_preferences: ^2.0.6
+  video_player: ^2.1.10
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - images/

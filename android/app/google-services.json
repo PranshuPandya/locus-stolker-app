@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "474748936551",
+    "project_id": "locus-stalker",
+    "storage_bucket": "locus-stalker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474748936551:android:3545f2cb44ccda7f384fc2",
+        "android_client_info": {
+          "package_name": "com.pranshupandya.locus_stalker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474748936551-kiblacngka0fn5o2pgi31vct43av4lku.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0FDN_UM46OvXkA_CQexxRcOsunSFsPCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474748936551-kiblacngka0fn5o2pgi31vct43av4lku.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
