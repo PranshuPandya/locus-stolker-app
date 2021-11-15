@@ -3,3 +3,4 @@
 A live location tracker.
 
 ![image](https://user-images.githubusercontent.com/72974832/141783302-882f8e76-42a2-4801-ace0-af911a9ba758.png)
+img[alt=drawing] { width: 200px; height: 200px}
