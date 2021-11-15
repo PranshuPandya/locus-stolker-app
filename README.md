@@ -8,6 +8,8 @@ A live location tracker.
 ## 🎬 Short Demo
 https://github.com/PranshuPandya/locus-stolker-app/blob/main/demo.mp4
 
+
+
 ## ⚙️ Tech-Stack
 The application is built entirely with Flutter. For our backend services, we have made use of Firebase.
 
