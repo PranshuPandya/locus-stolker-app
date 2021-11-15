@@ -2,15 +2,6 @@
 
 A live location tracker.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<!-- ![login](https://user-images.githubusercontent.com/72974832/141783302-882f8e76-42a2-4801-ace0-af911a9ba758.png) -->
+<img src="https://user-images.githubusercontent.com/72974832/141783302-882f8e76-42a2-4801-ace0-af911a9ba758.png" alt="login" width="" height="500"/>
+<!-- img[alt=login] { width: 200px; height: 200px} -->
