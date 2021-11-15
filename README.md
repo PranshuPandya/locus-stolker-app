@@ -6,7 +6,11 @@ A live location tracker.
 
 
 ## 🎬 Short Demo
-https://github.com/PranshuPandya/locus-stolker-app/blob/main/demo.mp4
+<!-- https://github.com/PranshuPandya/locus-stolker-app/blob/main/demo.mp4 -->
+
+
+https://user-images.githubusercontent.com/72974832/141793892-3857d062-dba3-45d2-8f6a-596ae3bd226d.mp4
+
 
 
 
