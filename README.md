@@ -1,4 +1,4 @@
-# locus_stalker
+# locus_stolker
 
 A live location tracker.
 
