@@ -83,8 +83,8 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
       ),
       body: Members(groupName: widget.groupName,update: _update,),
       bottomNavigationBar: BottomAppBar(
-        child: GestureDetector(
-          onTap: (){
+        child: FlatButton(
+          onPressed: (){
             showDialog(
                 context: context,
                 builder: (contexta) => AlertDialog(
