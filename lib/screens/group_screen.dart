@@ -311,7 +311,12 @@ class _GroupScreenState extends State<GroupScreen> {
           Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                Navigator.pushNamed(
+                    context,
+                    SearchScreen.id,
+                  );
+                },
                 child: Icon(
                   Icons.search,
                   size: 26.0,
