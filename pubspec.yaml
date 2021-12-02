@@ -25,7 +25,8 @@ dependencies:
   progress_hud: ^1.1.0
   shared_preferences: ^2.0.6
   video_player: ^2.1.10
-
+  custom_pop_up_menu: ^1.2.2
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
