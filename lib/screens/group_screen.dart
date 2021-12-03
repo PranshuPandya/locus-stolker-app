@@ -8,6 +8,7 @@ import 'package:locus_stalker/screens/search_screen.dart';
 import 'package:location/location.dart';
 import 'profile_screen.dart';
 import 'about_screen.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -97,6 +98,8 @@ class _GroupScreenState extends State<GroupScreen> {
     print(userName);
   }
 
+  CustomPopupMenuController _controller = CustomPopupMenuController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -158,9 +161,10 @@ class _GroupScreenState extends State<GroupScreen> {
                     if (changedUserName != null && changedUserName != "") {
                       userNameController.clear();
                       await loggedInUser!.updateDisplayName(changedUserName);
-                      await users
-                          .doc(loggedInUser!.uid)
-                          .update({'userName': changedUserName, 'searchKey': changedUserName![0].toUpperCase()});
+                      await users.doc(loggedInUser!.uid).update({
+                        'userName': changedUserName,
+                        'searchKey': changedUserName![0].toUpperCase()
+                      });
                       await groups
                           .where('users', arrayContains: userName)
                           .get()
@@ -312,7 +316,7 @@ class _GroupScreenState extends State<GroupScreen> {
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
-                Navigator.pushNamed(
+                  Navigator.pushNamed(
                     context,
                     SearchScreen.id,
                   );
@@ -323,37 +327,45 @@ class _GroupScreenState extends State<GroupScreen> {
                   color: Colors.white,
                 ),
               )),
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, AboutScreen.id);
-                  },
-                  child: Text("About"),
+          CustomPopupMenu(
+            child: Container(
+              child: Icon(Icons.more_vert, color: Colors.white),
+              padding: EdgeInsets.all(20),
+            ),
+            menuBuilder: () => ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Container(
+                color: Colors.black12,
+                child: IntrinsicWidth(
+                  child: GestureDetector(
+                    onTap: () {
+                      _controller.hideMenu();
+                    },
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ListTile(
+                              onTap: () {
+                                _controller.hideMenu();
+                                Navigator.pushNamed(context, AboutScreen.id);
+                              },
+                              leading: Text("About")),
+                          ListTile(
+                            leading: Text("Log Out"),
+                            onTap: () {
+                              _controller.hideMenu();
+                              _auth.signOut();
+                              Navigator.popUntil(
+                                  context, ModalRoute.withName(LoginScreen.id));
+                            },
+                          )
+                        ]),
+                  ),
                 ),
               ),
-              PopupMenuItem(
-                child: GestureDetector(
-                  onTap: () {
-                    _auth.signOut();
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(LoginScreen.id));
-                  },
-                  child: Text("Log Out"),
-                ),
-              ),
-            ],
-            shape: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(6.0)),
             ),
-            child: Padding(
-              padding: EdgeInsets.all(20.0),
-              child: Icon(
-                Icons.more_vert,
-                color: Colors.white,
-              ),
-            ),
+            pressType: PressType.singleClick,
+            controller: _controller,
           ),
         ],
         title: Text(
