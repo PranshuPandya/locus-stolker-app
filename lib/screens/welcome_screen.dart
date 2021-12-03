@@ -1,8 +1,10 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+
 import '../components/rounded_button.dart';
 import 'login_screen.dart';
 import 'registration_screen.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+
 class WelcomeScreen extends StatefulWidget {
   static const String id = 'welcome_screen';
 
@@ -29,27 +31,35 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     height: 60.0,
                   ),
                 ),
-                SizedBox(width: 10.0,),
+                SizedBox(
+                  width: 10.0,
+                ),
                 Flexible(
-                  child: TypewriterAnimatedTextKit(
-                    speed: Duration(milliseconds: 80),
-                    text: ['Locus Stalker'],
-                    textStyle: TextStyle(
-                      color: Colors.tealAccent.shade100,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900,
-                    ),
+                  child: AnimatedTextKit(
+                    animatedTexts: [
+                      TypewriterAnimatedText(
+                        'Locus Stalker',
+                        speed: Duration(milliseconds: 80),
+                        textStyle: TextStyle(
+                          color: Colors.tealAccent.shade100,
+                          fontSize: 40.0,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 48.0,),
+            SizedBox(
+              height: 48.0,
+            ),
             RoundedButton(
               onPressed: () {
                 Navigator.pushNamed(
                   context,
                   LoginScreen.id,
-                  );
+                );
               },
               colour: Colors.teal.shade400,
               text: 'Log In',
