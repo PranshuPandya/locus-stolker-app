@@ -215,6 +215,13 @@ class _GroupScreenState extends State<GroupScreen> {
                     }
                   } catch (e) {
                     print(e);
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                              title: Text('Invalid Email'),
+                              content: Text('Email is badly formatted'),
+                            )
+                            );
                   }
                 },
                 child: Icon(
