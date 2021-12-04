@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutScreen extends StatefulWidget {
   static const String id = 'about_screen';
@@ -8,8 +9,27 @@ class AboutScreen extends StatefulWidget {
 }
 
 class _AboutScreenState extends State<AboutScreen> {
+  Future<void> _launchUniversalLinkIos(String url) async {
+    final bool nativeAppLaunchSucceeded = await launch(
+      url,
+      forceSafariVC: false,
+      universalLinksOnly: true,
+    );
+    if (!nativeAppLaunchSucceeded) {
+      await launch(
+        url,
+        forceSafariVC: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    const String linkdinKandoi =
+        'https://www.linkedin.com/in/pranshu-kandoi-833a51200/';
+    const String linkdinPandya =
+        'https://www.linkedin.com/in/pranshu-pandya-9586b8200';
+
     return Scaffold(
       appBar: AppBar(
         title: Text('About'),
@@ -50,11 +70,15 @@ class _AboutScreenState extends State<AboutScreen> {
             SizedBox(
               height: 7,
             ),
-            Text(
-              'https://www.linkedin.com/in/pranshu-pandya-9586b8200/',
-              style: TextStyle(fontSize: 15),
+            TextButton(
+              onPressed: () => setState(() {
+                _launchUniversalLinkIos(linkdinPandya);
+              }),
+              child: Text(
+                linkdinPandya,
+                style: TextStyle(fontSize: 15),
+              ),
             ),
-            // Text('Linkdin: '),
             SizedBox(
               height: 15,
             ),
@@ -65,9 +89,14 @@ class _AboutScreenState extends State<AboutScreen> {
             SizedBox(
               height: 7,
             ),
-            Text(
-              'https://www.linkedin.com/in/pranshu-kandoi-833a51200/',
-              style: TextStyle(fontSize: 15),
+            TextButton(
+              onPressed: () => setState(() {
+                _launchUniversalLinkIos(linkdinKandoi);
+              }),
+              child: Text(
+                linkdinKandoi,
+                style: TextStyle(fontSize: 15),
+              ),
             ),
           ],
         ),
