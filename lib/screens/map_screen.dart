@@ -5,6 +5,8 @@ import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -226,7 +228,8 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Map')),
-      body: Stack(
+      body: SingleChildScrollView(
+      child: Stack(
         children: <Widget>[
           Container(
               height: MediaQuery.of(context).size.height - 80.0,
@@ -247,6 +250,17 @@ class _MapScreenState extends State<MapScreen> {
                       markers: initMarkers(_userNames, latitudes, longitudes),
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
+                    zoomControlsEnabled: true,
+                        zoomGesturesEnabled: true,
+                        scrollGesturesEnabled: true,
+                        rotateGesturesEnabled: true,
+                        tiltGesturesEnabled: true,
+                        gestureRecognizers:
+                            <Factory<OneSequenceGestureRecognizer>>[
+                          new Factory<OneSequenceGestureRecognizer>(
+                            () => new EagerGestureRecognizer(),
+                          ),
+                        ].toSet()
                     )
                   : Center(
                       child: Text(
@@ -267,6 +281,7 @@ class _MapScreenState extends State<MapScreen> {
             ),
           ),
         ],
+        ),
       ),
     );
   }
@@ -274,6 +289,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void dispose() {
     super.dispose();
+     _mapController.dispose();
 
     groupStream.cancel();
     userStream.cancel();
