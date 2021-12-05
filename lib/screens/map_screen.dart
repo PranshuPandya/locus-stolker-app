@@ -15,9 +15,14 @@ Map<String, double> longitudes = <String, double>{};
 
 class MapScreen extends StatefulWidget {
   static const String id = 'map_screen';
-  MapScreen({this.groupName, this.groupId});
+  MapScreen({
+    this.groupName,
+    this.groupId,
+    this.mapType,
+  });
   final String? groupName;
   final String? groupId;
+  final mapType;
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -74,9 +79,7 @@ class _MapScreenState extends State<MapScreen> {
           child: Container(
               height: 100.0,
               width: 150.0,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.white),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Colors.white),
               child: Center(
                   child: Text(
                 username.toString(),
@@ -93,11 +96,8 @@ class _MapScreenState extends State<MapScreen> {
     print(latitude);
     print(longitude);
     _mapController
-        .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-            target: LatLng(latitude, longitude),
-            zoom: 17.0,
-            bearing: 90.0,
-            tilt: 45.0)))
+        .animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(latitude, longitude), zoom: 17.0, bearing: 90.0, tilt: 45.0)))
         .then((val) {
       if (_userNames!.contains(username)) {
         _mapController.hideMarkerInfoWindow(MarkerId(username));
@@ -106,17 +106,14 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> getGroupUser() async {
-    await groups
-        .where('groupName', isEqualTo: widget.groupName)
-        .get()
-        .then((querySnapshot) => {
-              setState(() {
-                querySnapshot.docs.forEach((element) {
-                  _userNames = element.get('users');
-                  print(_userNames);
-                });
-              })
+    await groups.where('groupName', isEqualTo: widget.groupName).get().then((querySnapshot) => {
+          setState(() {
+            querySnapshot.docs.forEach((element) {
+              _userNames = element.get('users');
+              print(_userNames);
             });
+          })
+        });
     return getUserLocations();
   }
 
@@ -138,11 +135,9 @@ class _MapScreenState extends State<MapScreen> {
     groupStream = users.snapshots().listen((querySnapshot) {
       querySnapshot.docs.forEach((document) {
         if (_userNames!.contains(document.get('userName'))) {
-          latitudes.update(
-              document.get('userName'), (value) => document.get('latitude'),
+          latitudes.update(document.get('userName'), (value) => document.get('latitude'),
               ifAbsent: () => document.get('latitude'));
-          longitudes.update(
-              document.get('userName'), (value) => document.get('longitude'),
+          longitudes.update(document.get('userName'), (value) => document.get('longitude'),
               ifAbsent: () => document.get('longitude'));
 
           if (mounted) {
@@ -151,8 +146,7 @@ class _MapScreenState extends State<MapScreen> {
         }
       });
       if (latitudes[currentUser] != null && longitudes[currentUser] != null) {
-        zoomInMarker(
-            currentUser, latitudes[currentUser], longitudes[currentUser]);
+        zoomInMarker(currentUser, latitudes[currentUser], longitudes[currentUser]);
       }
     });
   }
@@ -237,16 +231,14 @@ class _MapScreenState extends State<MapScreen> {
                         _mapController = controller;
                       },
                       initialCameraPosition: CameraPosition(
-                        target: LatLng(
-                            latitudes[_auth.currentUser!.displayName]!
-                                .toDouble(),
-                            longitudes[_auth.currentUser!.displayName]!
-                                .toDouble()),
+                        target: LatLng(latitudes[_auth.currentUser!.displayName]!.toDouble(),
+                            longitudes[_auth.currentUser!.displayName]!.toDouble()),
                         zoom: 12,
                       ),
                       markers: initMarkers(_userNames, latitudes, longitudes),
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
+                      mapType: widget.mapType,
                     )
                   : Center(
                       child: Text(
