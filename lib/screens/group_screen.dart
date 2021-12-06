@@ -341,7 +341,7 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
         ),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: EdgeInsets.all(20.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
