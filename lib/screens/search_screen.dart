@@ -257,6 +257,11 @@ with SingleTickerProviderStateMixin {
       ),
     );
   }
+  @override
+  dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 }
 
 class WrapSelectedUsers extends StatefulWidget {
