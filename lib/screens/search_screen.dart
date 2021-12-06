@@ -171,7 +171,7 @@ with SingleTickerProviderStateMixin {
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
             child: GestureDetector(
               onTap: () {},
               child: AnimatedIcon(
