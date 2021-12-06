@@ -50,9 +50,22 @@ class _AboutScreenState extends State<AboutScreen> {
             SizedBox(
               height: 10,
             ),
-            Text(
-              'Locus Stalker is a live location tracker app made for knowing locations of your group of friends in real time.User can easily stalk any of his friends\' location. User can easily create, leave and manage groups by adding removing members. It gives user the freedom to share his location to the groups of his choice. It uses Firebase for database and uses email authentication or google sign in to register. Users can easily update their userinfo such as username, email and password. It allows user to set profilepic from gallarey or camera.',
-              style: TextStyle(fontSize: 20.0),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: 10.0,
+                horizontal: 8.0,
+              ),
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: Text(
+                  'Locus Stalker is a live location tracker app made for knowing locations of your group of friends in real time.User can easily stalk any of his friends\' location. User can easily create, leave and manage groups by adding removing members. It gives user the freedom to share his location to the groups of his choice. It uses Firebase for database and uses email authentication or google sign in to register. Users can easily update their userinfo such as username, email and password. It allows user to set profilepic from gallarey or camera.',
+                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                ),
+              ),
             ),
             SizedBox(height: 80.0),
             Text('Contact Us',
