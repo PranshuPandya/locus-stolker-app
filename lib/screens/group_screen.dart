@@ -378,9 +378,49 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                                 _controller.hideMenu();
                                 Navigator.pushNamed(context, AboutScreen.id);
                               },
-                              leading: Text("About")),
+                              leading: Container(
+                              padding: EdgeInsets.all(4.0),
+                              height: 50.0,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 6,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'About',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),),
                           ListTile(
-                            leading: Text("Log Out"),
+                            leading: Container(
+                              padding: EdgeInsets.all(4.0),
+                              height: 50.0,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 6,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Log Out',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
                             onTap: () {
                               _controller.hideMenu();
                               _auth.signOut();
