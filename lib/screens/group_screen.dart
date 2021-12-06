@@ -349,8 +349,9 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                     SearchScreen.id,
                   );
                 },
-                child: Icon(
-                  Icons.search,
+                child: AnimatedIcon(
+                  progress: controller,
+                  icon: AnimatedIcons.ellipsis_search,
                   size: 26.0,
                   color: Colors.white,
                 ),
@@ -431,6 +432,11 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
         ),
       ),
     );
+  }
+  @override
+  dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
