@@ -6,6 +6,7 @@ import 'package:locus_stalker/screens/login_screen.dart';
 import 'package:locus_stalker/screens/reset_password_screen.dart';
 import 'package:locus_stalker/screens/search_screen.dart';
 import 'package:location/location.dart';
+import '../constants.dart';
 import 'profile_screen.dart';
 import 'about_screen.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -23,7 +24,7 @@ class GroupScreen extends StatefulWidget {
   _GroupScreenState createState() => _GroupScreenState();
 }
 
-class _GroupScreenState extends State<GroupScreen> {
+class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStateMixin{
   String? email;
   String? userName;
   String? about;
@@ -38,6 +39,7 @@ class _GroupScreenState extends State<GroupScreen> {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var aboutController = TextEditingController();
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -46,6 +48,14 @@ class _GroupScreenState extends State<GroupScreen> {
     userData();
     getLocation();
     getCurrentUserInfo();
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+    controller.forward().then((_) async {
+      await Future.delayed(Duration(seconds: 1));
+      controller.reverse();
+    });
   }
 
   getCurrentUserInfo() async {
@@ -107,6 +117,11 @@ class _GroupScreenState extends State<GroupScreen> {
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              margin: EdgeInsets.all(20.0),
               currentAccountPicture: GestureDetector(
                 child: CircleAvatar(
                   backgroundColor: Colors.grey.shade800,
@@ -136,14 +151,18 @@ class _GroupScreenState extends State<GroupScreen> {
                   getCurrentUserInfo();
                 },
               ),
-              accountName: Text(
-                userName!,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0,
+              accountName: Container(
+                child: Text(
+                  userName!,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0,
+                    color: Colors.black,
+                  ),
                 ),
               ),
-              accountEmail: Text(email!),
+              accountEmail: Container(
+                  child: Text(email!, style: TextStyle(color: Colors.black))),
             ),
             ListTile(
               title: TextField(
@@ -151,9 +170,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 onChanged: (value) {
                   changedUserName = value;
                 },
-                decoration: InputDecoration(
-                  hintText: "Change username",
-                ),
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Change Username'),
               ),
               trailing: GestureDetector(
                 onTap: () async {
@@ -201,9 +218,7 @@ class _GroupScreenState extends State<GroupScreen> {
                 onChanged: (value) {
                   changedEmail = value;
                 },
-                decoration: InputDecoration(
-                  hintText: "change email",
-                ),
+                decoration: kTextFieldDecoration.copyWith(hintText: 'Change Email'),
               ),
               trailing: GestureDetector(
                 onTap: () async {
@@ -235,9 +250,19 @@ class _GroupScreenState extends State<GroupScreen> {
               ),
             ),
             ListTile(
-              title: Text(
-                'Re-set password',
-                style: TextStyle(color: Colors.white),
+              title: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, ResetPasswordScreen.id);
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black),
+                ),
+                child: Text(
+                  'Re-set password',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               trailing: GestureDetector(
                 onTap: () {
@@ -249,10 +274,15 @@ class _GroupScreenState extends State<GroupScreen> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             ListTile(
               title: Text(
                 'About',
+                textAlign: TextAlign.left,
                 style: TextStyle(
+                  
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -268,17 +298,8 @@ class _GroupScreenState extends State<GroupScreen> {
                   changedAbout = value;
                 },
                 controller: aboutController,
-                decoration: InputDecoration(
-                  hintText: '$about',
-                  hintStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                ),
+                decoration: kTextFieldDecoration.copyWith(hintText: '$about'),
+                  
               ),
               trailing: GestureDetector(
                 onTap: () async {
@@ -375,9 +396,22 @@ class _GroupScreenState extends State<GroupScreen> {
             controller: _controller,
           ),
         ],
-        title: Text(
-          'Groups',
-          style: TextStyle(color: Colors.white),
+        title: Container(
+          padding: EdgeInsets.all(4.0),
+          height: 40.0,
+          width: 90.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Colors.black,
+              width: 4,
+            ),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Text(
+            'Groups',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
         backgroundColor: Colors.black12,
       ),
@@ -390,8 +424,9 @@ class _GroupScreenState extends State<GroupScreen> {
             SearchScreen.id,
           );
         },
-        child: Icon(
-          Icons.add,
+        child: AnimatedIcon(
+          progress: controller,
+          icon: AnimatedIcons.event_add,
           color: Colors.white,
         ),
       ),
@@ -468,13 +503,17 @@ class GroupRectangle extends StatelessWidget {
                 height: 50.0,
                 width: 50.0,
                 decoration: BoxDecoration(
-                  color: Colors.black54,
-                  borderRadius: BorderRadius.circular(55),
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 4,
+                  ),
+                  borderRadius: BorderRadius.circular(30),
                 ),
                 child: Center(
                   child: Text(
                     '${groupName[0]}'.toUpperCase(),
-                    style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    style: TextStyle(fontSize: 20.0, color: Colors.black),
                   ),
                 ),
               ),
@@ -484,10 +523,25 @@ class GroupRectangle extends StatelessWidget {
                 vertical: 10.0,
                 horizontal: 8.0,
               ),
-              child: Text(
-                '$groupName',
-                style: TextStyle(
-                  fontSize: 20.0,
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                height: 50.0,
+                width: 300,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 6,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '$groupName',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ),
