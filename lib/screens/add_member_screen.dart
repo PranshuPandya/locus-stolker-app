@@ -181,9 +181,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search Member',
-          ),
+          decoration: kTextFieldDecoration.copyWith(hintText: 'Search Member'),
           onChanged: (value) async {
             initiateSearch(value);
           },
