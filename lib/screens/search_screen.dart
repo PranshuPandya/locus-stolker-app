@@ -17,18 +17,28 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen> 
+with SingleTickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   String? groupName;
   String? _username;
   var queryResultSet = [];
   var tempSearchStore = [];
+  late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
 
     getCurrentUser();
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+    controller.forward().then((_) async {
+      await Future.delayed(Duration(seconds: 1));
+      controller.reverse();
+    });
     _userNames.clear();
     _selectedUserNames.clear();
     _username = loggedInUser!.displayName;
@@ -164,8 +174,9 @@ class _SearchScreenState extends State<SearchScreen> {
             padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () {},
-              child: Icon(
-                Icons.search,
+              child: AnimatedIcon(
+                progress: controller,
+                icon: AnimatedIcons.ellipsis_search,
                 size: 26.0,
               ),
             ),
