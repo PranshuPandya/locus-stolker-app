@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
 CollectionReference groups = _firestore.collection('Groups');
@@ -153,9 +154,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search Member',
-          ),
+          decoration: kTextFieldDecoration.copyWith(hintText: 'Search Member'),
           onChanged: (value) async {
             initiateSearch(value);
           },
@@ -215,7 +214,7 @@ class _SearchScreenState extends State<SearchScreen> {
               content: TextField(
                 onChanged: (value) {},
                 controller: _dialogBoxController,
-                decoration: InputDecoration(hintText: 'here'),
+                decoration: kTextFieldDecoration.copyWith(hintText: ''),
               ),
               actions: [
                 FlatButton(
