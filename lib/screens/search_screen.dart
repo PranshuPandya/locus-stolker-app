@@ -337,10 +337,25 @@ class _MemberRectangleState extends State<MemberRectangle> {
                 vertical: 10.0,
                 horizontal: 8.0,
               ),
-              child: Text(
-                '${widget.memberName}',
-                style: TextStyle(
-                  fontSize: 20.0,
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                height: 50.0,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 6,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '${widget.memberName}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ),
@@ -354,6 +369,10 @@ class _MemberRectangleState extends State<MemberRectangle> {
                       width: 50.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 6,
+                        ),
                         borderRadius: BorderRadius.circular(55),
                       ),
                       child: Center(
