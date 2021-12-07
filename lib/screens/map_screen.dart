@@ -5,6 +5,8 @@ import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:collection';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -75,11 +77,11 @@ class _MapScreenState extends State<MapScreen> {
         },
         child: Material(
           elevation: 4.0,
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(30.0),
           child: Container(
-              height: 100.0,
+              height: 50.0,
               width: 150.0,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Colors.white),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(30.0), color: Colors.white),
               child: Center(
                   child: Text(
                 username.toString(),
@@ -219,8 +221,27 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Map')),
-      body: Stack(
+      appBar: AppBar(title: Container(
+          padding: EdgeInsets.all(4.0),
+          height: 40.0,
+          width: 70.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(
+              color: Colors.black,
+              width: 4,
+            ),
+            borderRadius: BorderRadius.circular(30.0),
+          ),
+          child: Text(
+            'Map',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+         ),
+      body: SingleChildScrollView(
+      child : Stack(
         children: <Widget>[
           Container(
               height: MediaQuery.of(context).size.height - 80.0,
@@ -237,8 +258,18 @@ class _MapScreenState extends State<MapScreen> {
                       ),
                       markers: initMarkers(_userNames, latitudes, longitudes),
                       myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
-                      mapType: widget.mapType,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: true,
+                        zoomGesturesEnabled: true,
+                        scrollGesturesEnabled: true,
+                        rotateGesturesEnabled: true,
+                        tiltGesturesEnabled: true,
+                        gestureRecognizers:
+                            <Factory<OneSequenceGestureRecognizer>>[
+                          new Factory<OneSequenceGestureRecognizer>(
+                            () => new EagerGestureRecognizer(),
+                          ),
+                        ].toSet()
                     )
                   : Center(
                       child: Text(
@@ -260,6 +291,7 @@ class _MapScreenState extends State<MapScreen> {
           ),
         ],
       ),
+        ),
     );
   }
 

@@ -95,9 +95,49 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                               ),
                             );
                           },
-                          leading: Text("Normal Map")),
+                          leading: Container(
+                              padding: EdgeInsets.all(4.0),
+                              height: 50.0,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 6,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Normal Map',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),),
                       ListTile(
-                        leading: Text("Hybrid Map"),
+                        leading: Container(
+                              padding: EdgeInsets.all(4.0),
+                              height: 50.0,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 6,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Hybrid Map',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
                         onTap: () {
                           _controller.hideMenu();
                           Navigator.push(
@@ -318,15 +358,30 @@ class GroupRectangle extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
+             Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 10.0,
                 horizontal: 8.0,
               ),
-              child: Text(
-                '$memberName',
-                style: TextStyle(
-                  fontSize: 20.0,
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                height: 50.0,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 6,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '$memberName',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ),
