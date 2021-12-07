@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
 CollectionReference groups = _firestore.collection('Groups');
@@ -16,18 +17,28 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen> 
+with SingleTickerProviderStateMixin {
   final _auth = FirebaseAuth.instance;
   String? groupName;
   String? _username;
   var queryResultSet = [];
   var tempSearchStore = [];
+  late AnimationController controller;
 
   @override
   void initState() {
     super.initState();
 
     getCurrentUser();
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 10),
+    );
+    controller.forward().then((_) async {
+      await Future.delayed(Duration(seconds: 1));
+      controller.reverse();
+    });
     _userNames.clear();
     _selectedUserNames.clear();
     _username = loggedInUser!.displayName;
@@ -153,20 +164,19 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search Member',
-          ),
+          decoration: kTextFieldDecoration.copyWith(hintText: 'Search Member'),
           onChanged: (value) async {
             initiateSearch(value);
           },
         ),
         actions: [
           Padding(
-            padding: EdgeInsets.only(right: 20.0),
+            padding: EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
             child: GestureDetector(
               onTap: () {},
-              child: Icon(
-                Icons.search,
+              child: AnimatedIcon(
+                progress: controller,
+                icon: AnimatedIcons.ellipsis_search,
                 size: 26.0,
               ),
             ),
@@ -215,7 +225,7 @@ class _SearchScreenState extends State<SearchScreen> {
               content: TextField(
                 onChanged: (value) {},
                 controller: _dialogBoxController,
-                decoration: InputDecoration(hintText: 'here'),
+                decoration: kTextFieldDecoration.copyWith(hintText: ''),
               ),
               actions: [
                 FlatButton(
@@ -246,6 +256,11 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
+  }
+  @override
+  dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
@@ -322,10 +337,25 @@ class _MemberRectangleState extends State<MemberRectangle> {
                 vertical: 10.0,
                 horizontal: 8.0,
               ),
-              child: Text(
-                '${widget.memberName}',
-                style: TextStyle(
-                  fontSize: 20.0,
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                height: 50.0,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 6,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '${widget.memberName}',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ),
@@ -339,6 +369,10 @@ class _MemberRectangleState extends State<MemberRectangle> {
                       width: 50.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 6,
+                        ),
                         borderRadius: BorderRadius.circular(55),
                       ),
                       child: Center(
