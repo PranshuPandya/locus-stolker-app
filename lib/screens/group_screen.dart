@@ -6,7 +6,6 @@ import 'package:locus_stalker/screens/login_screen.dart';
 import 'package:locus_stalker/screens/reset_password_screen.dart';
 import 'package:locus_stalker/screens/search_screen.dart';
 import 'package:location/location.dart';
-import '../constants.dart';
 import 'profile_screen.dart';
 import 'about_screen.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -24,7 +23,7 @@ class GroupScreen extends StatefulWidget {
   _GroupScreenState createState() => _GroupScreenState();
 }
 
-class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStateMixin{
+class _GroupScreenState extends State<GroupScreen> {
   String? email;
   String? userName;
   String? about;
@@ -39,7 +38,6 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   var aboutController = TextEditingController();
-  late AnimationController controller;
 
   @override
   void initState() {
@@ -48,14 +46,6 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
     userData();
     getLocation();
     getCurrentUserInfo();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 10),
-    );
-    controller.forward().then((_) async {
-      await Future.delayed(Duration(seconds: 1));
-      controller.reverse();
-    });
   }
 
   getCurrentUserInfo() async {
@@ -117,11 +107,6 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: EdgeInsets.all(20.0),
               currentAccountPicture: GestureDetector(
                 child: CircleAvatar(
                   backgroundColor: Colors.grey.shade800,
@@ -151,18 +136,14 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                   getCurrentUserInfo();
                 },
               ),
-              accountName: Container(
-                child: Text(
-                  userName!,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15.0,
-                    color: Colors.black,
-                  ),
+              accountName: Text(
+                userName!,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0,
                 ),
               ),
-              accountEmail: Container(
-                  child: Text(email!, style: TextStyle(color: Colors.black))),
+              accountEmail: Text(email!),
             ),
             ListTile(
               title: TextField(
@@ -170,7 +151,9 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                 onChanged: (value) {
                   changedUserName = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Change Username'),
+                decoration: InputDecoration(
+                  hintText: "Change username",
+                ),
               ),
               trailing: GestureDetector(
                 onTap: () async {
@@ -218,7 +201,9 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                 onChanged: (value) {
                   changedEmail = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Change Email'),
+                decoration: InputDecoration(
+                  hintText: "change email",
+                ),
               ),
               trailing: GestureDetector(
                 onTap: () async {
@@ -250,19 +235,9 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
               ),
             ),
             ListTile(
-              title: ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, ResetPasswordScreen.id);
-                },
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
-                ),
-                child: Text(
-                  'Re-set password',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                ),
+              title: Text(
+                'Re-set password',
+                style: TextStyle(color: Colors.white),
               ),
               trailing: GestureDetector(
                 onTap: () {
@@ -274,15 +249,10 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                 ),
               ),
             ),
-            SizedBox(
-              height: 10,
-            ),
             ListTile(
               title: Text(
                 'About',
-                textAlign: TextAlign.left,
                 style: TextStyle(
-                  
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -298,8 +268,17 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                   changedAbout = value;
                 },
                 controller: aboutController,
-                decoration: kTextFieldDecoration.copyWith(hintText: '$about'),
-                  
+                decoration: InputDecoration(
+                  hintText: '$about',
+                  hintStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                ),
               ),
               trailing: GestureDetector(
                 onTap: () async {
@@ -341,7 +320,7 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
         ),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
@@ -349,9 +328,8 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                     SearchScreen.id,
                   );
                 },
-                child: AnimatedIcon(
-                  progress: controller,
-                  icon: AnimatedIcons.ellipsis_search,
+                child: Icon(
+                  Icons.search,
                   size: 26.0,
                   color: Colors.white,
                 ),
@@ -378,49 +356,9 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
                                 _controller.hideMenu();
                                 Navigator.pushNamed(context, AboutScreen.id);
                               },
-                              leading: Container(
-                              padding: EdgeInsets.all(4.0),
-                              height: 50.0,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 6,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                'About',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0,
-                                ),
-                              ),
-                            ),),
+                              leading: Text("About")),
                           ListTile(
-                            leading: Container(
-                              padding: EdgeInsets.all(4.0),
-                              height: 50.0,
-                              width: 150,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 6,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                'Log Out',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0,
-                                ),
-                              ),
-                            ),
+                            leading: Text("Log Out"),
                             onTap: () {
                               _controller.hideMenu();
                               _auth.signOut();
@@ -437,22 +375,9 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
             controller: _controller,
           ),
         ],
-        title: Container(
-          padding: EdgeInsets.all(4.0),
-          height: 40.0,
-          width: 90.0,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: Colors.black,
-              width: 4,
-            ),
-            borderRadius: BorderRadius.circular(30.0),
-          ),
-          child: Text(
-            'Groups',
-            style: TextStyle(color: Colors.black),
-          ),
+        title: Text(
+          'Groups',
+          style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.black12,
       ),
@@ -465,18 +390,12 @@ class _GroupScreenState extends State<GroupScreen> with SingleTickerProviderStat
             SearchScreen.id,
           );
         },
-        child: AnimatedIcon(
-          progress: controller,
-          icon: AnimatedIcons.event_add,
+        child: Icon(
+          Icons.add,
           color: Colors.white,
         ),
       ),
     );
-  }
-  @override
-  dispose() {
-    controller.dispose();
-    super.dispose();
   }
 }
 
@@ -549,17 +468,13 @@ class GroupRectangle extends StatelessWidget {
                 height: 50.0,
                 width: 50.0,
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 4,
-                  ),
-                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(55),
                 ),
                 child: Center(
                   child: Text(
                     '${groupName[0]}'.toUpperCase(),
-                    style: TextStyle(fontSize: 20.0, color: Colors.black),
+                    style: TextStyle(fontSize: 20.0, color: Colors.white),
                   ),
                 ),
               ),
@@ -569,25 +484,10 @@ class GroupRectangle extends StatelessWidget {
                 vertical: 10.0,
                 horizontal: 8.0,
               ),
-              child: Container(
-                padding: EdgeInsets.all(4.0),
-                height: 50.0,
-                width: 300,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 6,
-                  ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  '$groupName',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                  ),
+              child: Text(
+                '$groupName',
+                style: TextStyle(
+                  fontSize: 20.0,
                 ),
               ),
             ),
