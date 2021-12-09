@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:locus_stalker/screens/map_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'add_member_screen.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -20,7 +22,7 @@ class GroupMemberScreen extends StatefulWidget {
 
 class _GroupMemberScreenState extends State<GroupMemberScreen> {
   String? groupId;
-  
+
   @override
   void initState() {
     super.initState();
@@ -29,7 +31,7 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
     getGroupId();
   }
 
-  void _update(){
+  void _update() {
     //setState(() {});
   }
 
@@ -46,81 +48,178 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
   }
 
   void getGroupId() async {
-    await groups.where('groupName',isEqualTo: widget.groupName).get()
-          .then((querySnapshot) => {
-            setState((){
-              querySnapshot.docs.forEach((element) {
-                 groupId = element.id;
-                print(groupId);
-              });
-            })
-      });
+    await groups.where('groupName', isEqualTo: widget.groupName).get().then((querySnapshot) => {
+          setState(() {
+            querySnapshot.docs.forEach((element) {
+              groupId = element.id;
+              print(groupId);
+            });
+          })
+        });
   }
-  
+
+  CustomPopupMenuController _controller = CustomPopupMenuController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.groupName}'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: GestureDetector(
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => MapScreen(groupName: widget.groupName,groupId:groupId),
+          CustomPopupMenu(
+            child: Container(
+              child: Icon(Icons.map_sharp),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            ),
+            menuBuilder: () => ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Container(
+                color: Colors.black12,
+                child: IntrinsicWidth(
+                  child: GestureDetector(
+                    onTap: () {
+                      _controller.hideMenu();
+                    },
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+                      ListTile(
+                          onTap: () {
+                            _controller.hideMenu();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MapScreen(
+                                  groupName: widget.groupName,
+                                  groupId: groupId,
+                                  mapType: MapType.normal,
+                                ),
+                              ),
+                            );
+                          },
+                          leading: Container(
+                              padding: EdgeInsets.all(4.0),
+                              height: 50.0,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 6,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Normal Map',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),),
+                      ListTile(
+                        leading: Container(
+                              padding: EdgeInsets.all(4.0),
+                              height: 50.0,
+                              width: 150,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 6,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                'Hybrid Map',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                        onTap: () {
+                          _controller.hideMenu();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MapScreen(
+                                groupName: widget.groupName,
+                                groupId: groupId,
+                                mapType: MapType.hybrid,
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    ]),
                   ),
-                );
-              },
-              child: Icon(
-                Icons.map_sharp,
+                ),
               ),
             ),
+            pressType: PressType.singleClick,
+            controller: _controller,
           ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Navigator.push(
+          //         context,
+          //         MaterialPageRoute(
+          //           builder: (context) => MapScreen(groupName: widget.groupName, groupId: groupId),
+          //         ),
+          //       );
+          //     },
+          //     child: Icon(
+          //       Icons.map_sharp,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
-      body: Members(groupName: widget.groupName,update: _update,),
+      body: Members(
+        groupName: widget.groupName,
+        update: _update,
+      ),
       bottomNavigationBar: BottomAppBar(
         child: FlatButton(
-          onPressed: (){
+          onPressed: () {
             showDialog(
-                context: context,
-                builder: (contexta) => AlertDialog(
-                  backgroundColor: Colors.grey.shade900,
-                  title: Text('Leave Group'),
-                  actions: [
-                    FlatButton(
-                        onPressed: () async {
-                          await groups.where('groupName',isEqualTo: widget.groupName).get()
-                              .then((value) => {
-                                value.docs.forEach((element) {
-                                 List<dynamic> tem =  element.get('users');
-                                 Map<String,dynamic> temp2 = element.get('Status');
-                                 temp2.remove(loggedInUser!.displayName);
-                                 tem.remove(loggedInUser!.displayName);
-                                 groups.doc(element.id).update({'users' : tem,'Status':temp2});
-                                })
+              context: context,
+              builder: (contexta) => AlertDialog(
+                backgroundColor: Colors.grey.shade900,
+                title: Text('Leave Group'),
+                actions: [
+                  FlatButton(
+                    onPressed: () async {
+                      await groups.where('groupName', isEqualTo: widget.groupName).get().then((value) => {
+                            value.docs.forEach((element) {
+                              List<dynamic> tem = element.get('users');
+                              Map<String, dynamic> temp2 = element.get('Status');
+                              temp2.remove(loggedInUser!.displayName);
+                              tem.remove(loggedInUser!.displayName);
+                              groups.doc(element.id).update({'users': tem, 'Status': temp2});
+                            })
                           });
-                          Navigator.pop(contexta);
-                          Navigator.pop(context);
-                        },
-                        child: Text('Confirm'),
-                    )
-                  ],
-                ),
+                      Navigator.pop(contexta);
+                      Navigator.pop(context);
+                    },
+                    child: Text('Confirm'),
+                  )
+                ],
+              ),
             );
           },
           child: Container(
             height: 60.0,
             child: Center(
-                child: Text(
-                  'Leave Group',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                  ),
+              child: Text(
+                'Leave Group',
+                style: TextStyle(
+                  fontSize: 18.0,
                 ),
+              ),
             ),
           ),
         ),
@@ -128,13 +227,15 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.black,
-        onPressed: (){
+        onPressed: () {
           Navigator.push(
-              context,
-           MaterialPageRoute(
-               builder: (context) => AddMemberScreen(groupName: widget.groupName,),
-           ),
-            );
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddMemberScreen(
+                groupName: widget.groupName,
+              ),
+            ),
+          );
         },
         child: Icon(
           Icons.add,
@@ -146,17 +247,17 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
 }
 
 class Members extends StatelessWidget {
-  Members({this.groupName,required this.update});
+  Members({this.groupName, required this.update});
   final String? groupName;
   final VoidCallback update;
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: groups.where('groupName',isEqualTo: groupName).snapshots(),
-      builder: (context,snapshot){
+      stream: groups.where('groupName', isEqualTo: groupName).snapshots(),
+      builder: (context, snapshot) {
         List<GroupRectangle> groupRectangles = [];
-        if(!snapshot.hasData){
+        if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(
               backgroundColor: Colors.grey,
@@ -164,17 +265,22 @@ class Members extends StatelessWidget {
           );
         }
         final groupname = snapshot.data!.docs;
-        for(var singleGroup in groupname){
+        for (var singleGroup in groupname) {
           List<dynamic> temp = singleGroup.get('users');
-          Map<String,dynamic> temp2 = singleGroup.get('Status');
-          for(var member in temp){
-            final groupRectangle = GroupRectangle(memberName: member,groupName: groupName,update: update,isSwitched: temp2[member],);
+          Map<String, dynamic> temp2 = singleGroup.get('Status');
+          for (var member in temp) {
+            final groupRectangle = GroupRectangle(
+              memberName: member,
+              groupName: groupName,
+              update: update,
+              isSwitched: temp2[member],
+            );
             groupRectangles.add(groupRectangle);
           }
         }
         return ListView.builder(
           itemCount: groupRectangles.length,
-          itemBuilder: (context,index){
+          itemBuilder: (context, index) {
             return groupRectangles[index];
           },
         );
@@ -184,7 +290,7 @@ class Members extends StatelessWidget {
 }
 
 class GroupRectangle extends StatelessWidget {
-  GroupRectangle({required this.memberName,this.groupName,required this.update,required this.isSwitched});
+  GroupRectangle({required this.memberName, this.groupName, required this.update, required this.isSwitched});
   final String memberName;
   final String? groupName;
   final VoidCallback update;
@@ -193,8 +299,8 @@ class GroupRectangle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if(memberName != loggedInUser!.displayName){
+      onTap: () {
+        if (memberName != loggedInUser!.displayName) {
           showDialog(
             context: context,
             builder: (contexta) => AlertDialog(
@@ -203,16 +309,15 @@ class GroupRectangle extends StatelessWidget {
               actions: [
                 FlatButton(
                   onPressed: () async {
-                    await groups.where('groupName',isEqualTo: groupName).get()
-                        .then((value) => {
-                      value.docs.forEach((element) {
-                        List<dynamic> temp =  element.get('users');
-                        Map<String,dynamic> temp2 = element.get('Status');
-                        temp2.remove(memberName);
-                        temp.remove(memberName);
-                        groups.doc(element.id).update({'users' : temp,'Status':temp2});
-                      })
-                    });
+                    await groups.where('groupName', isEqualTo: groupName).get().then((value) => {
+                          value.docs.forEach((element) {
+                            List<dynamic> temp = element.get('users');
+                            Map<String, dynamic> temp2 = element.get('Status');
+                            temp2.remove(memberName);
+                            temp.remove(memberName);
+                            groups.doc(element.id).update({'users': temp, 'Status': temp2});
+                          })
+                        });
                     Navigator.pop(contexta);
                   },
                   child: Text('Remove'),
@@ -253,15 +358,30 @@ class GroupRectangle extends StatelessWidget {
                 ),
               ),
             ),
-            Padding(
+             Padding(
               padding: EdgeInsets.symmetric(
                 vertical: 10.0,
                 horizontal: 8.0,
               ),
-              child: Text(
-                '$memberName',
-                style: TextStyle(
-                  fontSize: 20.0,
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                height: 50.0,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: Colors.black,
+                    width: 6,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '$memberName',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                  ),
                 ),
               ),
             ),
@@ -269,25 +389,24 @@ class GroupRectangle extends StatelessWidget {
             Switch(
               activeColor: memberName == loggedInUser!.displayName
                   ? Colors.tealAccent.shade200
-                  :Colors.tealAccent.shade100.withOpacity(0.5),
+                  : Colors.tealAccent.shade100.withOpacity(0.5),
               inactiveTrackColor: memberName == loggedInUser!.displayName
                   ? Colors.grey.shade600
-                  :Colors.grey.shade600.withOpacity(0.5),
+                  : Colors.grey.shade600.withOpacity(0.5),
               inactiveThumbColor: memberName == loggedInUser!.displayName
                   ? Colors.grey.shade400
-                  :Colors.grey.shade400.withOpacity(0.5),
+                  : Colors.grey.shade400.withOpacity(0.5),
               onChanged: (isSelected) async {
-                  await groups.where('groupName',isEqualTo: groupName).get()
-                      .then((value) => {
-                    value.docs.forEach((element) {
-                      Map<String,dynamic> temp2 = element.get('Status');
-                      isSelected = temp2[memberName];
-                      if(memberName == loggedInUser!.displayName){
-                        temp2.update(memberName, (value) => !isSelected,ifAbsent: () => !isSelected);
-                      }
-                      groups.doc(element.id).update({'Status':temp2});
-                    })
-                  });
+                await groups.where('groupName', isEqualTo: groupName).get().then((value) => {
+                      value.docs.forEach((element) {
+                        Map<String, dynamic> temp2 = element.get('Status');
+                        isSelected = temp2[memberName];
+                        if (memberName == loggedInUser!.displayName) {
+                          temp2.update(memberName, (value) => !isSelected, ifAbsent: () => !isSelected);
+                        }
+                        groups.doc(element.id).update({'Status': temp2});
+                      })
+                    });
               },
               value: isSwitched!,
             ),

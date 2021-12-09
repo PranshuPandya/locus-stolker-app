@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../constants.dart';
 final _firestore = FirebaseFirestore.instance;
 CollectionReference groups = _firestore.collection('Groups');
 CollectionReference users = _firestore.collection('users');
@@ -181,9 +181,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
-          decoration: InputDecoration(
-            hintText: 'Search Member',
-          ),
+          decoration: kTextFieldDecoration.copyWith(hintText: 'Search Member'),
           onChanged: (value) async {
             initiateSearch(value);
           },
