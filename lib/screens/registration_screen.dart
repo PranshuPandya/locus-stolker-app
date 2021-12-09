@@ -143,19 +143,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   );
                 } catch (e) {
                   print(e);
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   SnackBar(
-                  //     duration: Duration(seconds: 3),
-                  //     backgroundColor: Colors.grey.shade900,
-                  //     content: Text(
-                  //       '$e',
-                  //       textAlign: TextAlign.center,
-                  //       style: TextStyle(
-                  //         color: Colors.white,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      duration: Duration(seconds: 3),
+                      backgroundColor: Colors.grey.shade900,
+                      content: Text(
+                        e.toString().replaceRange(0, 14, '').split(']')[1],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+                  );
                 }
               },
               text: 'Register',
