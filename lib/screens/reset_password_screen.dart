@@ -46,38 +46,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           SizedBox(
             height: 20.0,
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 40.0,
-            ),
-            child: TextField(
-              keyboardType: TextInputType.emailAddress,
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                newPassword = value;
-              },
-              decoration:
-                  kTextFieldDecoration.copyWith(hintText: 'Enter new password'),
-            ),
+          TextField(
+            keyboardType: TextInputType.emailAddress,
+            textAlign: TextAlign.center,
+            onChanged: (value) {
+              newPassword = value;
+            },
+            decoration:
+                kTextFieldDecoration.copyWith(hintText: 'Enter new password'),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 10.0,
-              horizontal: 40.0,
-            ),
-            child: RoundedButton(
-              colour: Colors.grey.shade800,
-              text: 'Set password',
-              onPressed: () {
-                try {
-                  loggedInUser!.updatePassword(newPassword!);
-                  Navigator.pop(context);
-                } catch (e) {
-                  print(e);
-                }
-              },
-            ),
+          RoundedButton(
+            colour: Colors.grey.shade800,
+            text: 'Set password',
+            onPressed: () {
+              try {
+                loggedInUser!.updatePassword(newPassword!);
+                Navigator.pop(context);
+              } catch (e) {
+                print(e);
+              }
+            },
           ),
         ],
       ),
