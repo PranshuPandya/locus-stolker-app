@@ -22,12 +22,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  PickedFile? _image;
+  XFile? _image;
   var downloadUrl = kDefaultUrl;
   var profilePicUrl;
 
   _imgFromCamera() async {
-    PickedFile? image = await _picker.getImage(source: ImageSource.camera);
+    XFile? image = await _picker.pickImage(source: ImageSource.camera);
 
     setState(() {
       _image = image;
@@ -38,7 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _imgFromGallery() async {
-    PickedFile? image = await _picker.getImage(source: ImageSource.gallery);
+    XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       _image = image;
