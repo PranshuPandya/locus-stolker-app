@@ -7,14 +7,15 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  flutter:
-    sdk: flutter
   animated_text_kit: ^4.2.1
   cloud_firestore: ^2.3.0
   cupertino_icons: ^1.0.3
+  custom_pop_up_menu: ^1.2.2
   firebase_auth: ^2.0.0
   firebase_core: ^1.3.0
   firebase_storage: ^9.0.0
+  flutter:
+    sdk: flutter
   font_awesome_flutter: ^9.1.0
   geoflutterfire: ^3.0.1
   geolocator: ^7.2.0+1
@@ -23,10 +24,10 @@ dependencies:
   image_picker: ^0.8.1+3
   location: ^4.3.0
   progress_hud: ^1.1.0
+  provider: ^6.0.1
   shared_preferences: ^2.0.6
-  video_player: ^2.1.10
-  custom_pop_up_menu: ^1.2.2
   url_launcher: ^6.0.17
+  video_player: ^2.1.10
 
 dev_dependencies:
   flutter_test:

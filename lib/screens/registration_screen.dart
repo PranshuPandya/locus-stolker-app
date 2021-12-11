@@ -5,6 +5,7 @@ import 'package:locus_stalker/constants.dart';
 import '../components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:location/location.dart';
+import '../services/auth.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -123,7 +124,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     email: email!,
                     password: password!,
                   );
-                  await newUser.user!.updateDisplayName(userName);
 
                   CollectionReference users = _firestore.collection('users');
                   await users.doc(_auth.currentUser!.uid).set({
@@ -137,10 +137,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     'photoUrl': kDefaultUrl,
                   });
 
-                  Navigator.pushNamed(
-                    context,
-                    GroupScreen.id,
-                  );
+                  await newUser.user!.updateDisplayName(userName);
+
+                  Navigator.pop(context);
+                  LocalUser(uid: newUser.user!.uid);
                 } catch (e) {
                   print(e);
                   ScaffoldMessenger.of(context).showSnackBar(

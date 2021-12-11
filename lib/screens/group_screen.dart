@@ -6,6 +6,7 @@ import 'package:locus_stalker/screens/login_screen.dart';
 import 'package:locus_stalker/screens/reset_password_screen.dart';
 import 'package:locus_stalker/screens/search_screen.dart';
 import 'package:location/location.dart';
+import 'package:locus_stalker/wrap.dart';
 import 'profile_screen.dart';
 import 'about_screen.dart';
 import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
@@ -102,6 +103,7 @@ class _GroupScreenState extends State<GroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(userName![0]);
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -224,8 +226,7 @@ class _GroupScreenState extends State<GroupScreen> {
                         builder: (BuildContext context) => AlertDialog(
                               title: Text('Invalid Email'),
                               content: Text('Email is badly formatted'),
-                            )
-                            );
+                            ));
                   }
                 },
                 child: Icon(
@@ -359,11 +360,9 @@ class _GroupScreenState extends State<GroupScreen> {
                               leading: Text("About")),
                           ListTile(
                             leading: Text("Log Out"),
-                            onTap: () {
+                            onTap: () async {
                               _controller.hideMenu();
-                              _auth.signOut();
-                              Navigator.popUntil(
-                                  context, ModalRoute.withName(LoginScreen.id));
+                              await _auth.signOut();
                             },
                           )
                         ]),
