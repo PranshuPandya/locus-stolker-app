@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:locus_stalker/screens/group_screen.dart';
 import 'package:locus_stalker/screens/login_screen.dart';
 import 'package:locus_stalker/screens/registration_screen.dart';
+import 'package:locus_stalker/screens/splash_screen.dart';
 import 'package:locus_stalker/screens/welcome_screen.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,7 +37,7 @@ class LocusStalker extends StatelessWidget {
             bodyText1: TextStyle(color: Colors.black54),
           ),
         ),
-        initialRoute: Wrapper.id,
+        home: SplashScreen(),
         routes: {
           Wrapper.id: (context) => Wrapper(),
           WelcomeScreen.id: (context) => WelcomeScreen(),
