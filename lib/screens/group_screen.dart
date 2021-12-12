@@ -25,9 +25,9 @@ class GroupScreen extends StatefulWidget {
 }
 
 class _GroupScreenState extends State<GroupScreen> {
-  String? email;
-  String? userName;
-  String? about;
+  String email = ' ';
+  String userName = ' ';
+  String about = ' ';
   String? changedUserName;
   String? changedEmail;
   String? changedAbout;
@@ -84,8 +84,8 @@ class _GroupScreenState extends State<GroupScreen> {
 
   void userData() async {
     try {
-      email = _auth.currentUser!.email;
-      userName = _auth.currentUser!.displayName;
+      email = _auth.currentUser!.email!;
+      userName = _auth.currentUser!.displayName!;
       users.doc(_auth.currentUser!.uid).get().then((value) => {
             setState(() {
               about = value.get('About');
@@ -103,7 +103,6 @@ class _GroupScreenState extends State<GroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(userName![0]);
     return Scaffold(
       drawer: Drawer(
         child: ListView(
@@ -114,7 +113,7 @@ class _GroupScreenState extends State<GroupScreen> {
                   backgroundColor: Colors.grey.shade800,
                   child: profilePicUrl == null
                       ? Text(
-                          userName![0].toUpperCase(),
+                          userName[0].toUpperCase(),
                           style: TextStyle(
                             fontSize: 40.0,
                             fontWeight: FontWeight.bold,
@@ -139,13 +138,13 @@ class _GroupScreenState extends State<GroupScreen> {
                 },
               ),
               accountName: Text(
-                userName!,
+                userName,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15.0,
                 ),
               ),
-              accountEmail: Text(email!),
+              accountEmail: Text(email),
             ),
             ListTile(
               title: TextField(
@@ -183,7 +182,7 @@ class _GroupScreenState extends State<GroupScreen> {
                               });
 
                       setState(() {
-                        userName = changedUserName;
+                        userName = changedUserName!;
                       });
                     }
                   } catch (e) {
@@ -213,7 +212,7 @@ class _GroupScreenState extends State<GroupScreen> {
                     if (changedEmail != null && changedEmail != "") {
                       emailController.clear();
                       await loggedInUser!.updateEmail(changedEmail!);
-                      email = changedEmail;
+                      email = changedEmail!;
                       setState(() {});
                       await users
                           .doc(loggedInUser!.uid)
@@ -399,8 +398,8 @@ class _GroupScreenState extends State<GroupScreen> {
 }
 
 class Groups extends StatelessWidget {
-  Groups({this.userName});
-  final String? userName;
+  Groups({required this.userName});
+  final String userName;
 
   @override
   Widget build(BuildContext context) {

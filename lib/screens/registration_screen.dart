@@ -125,6 +125,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     password: password!,
                   );
 
+                  await newUser.user!.updateDisplayName(userName);
+
                   CollectionReference users = _firestore.collection('users');
                   await users.doc(_auth.currentUser!.uid).set({
                     'userName': userName,
@@ -136,8 +138,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     'About': 'Available',
                     'photoUrl': kDefaultUrl,
                   });
-
-                  await newUser.user!.updateDisplayName(userName);
 
                   Navigator.pop(context);
                   LocalUser(uid: newUser.user!.uid);
