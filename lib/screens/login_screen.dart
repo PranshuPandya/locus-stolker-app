@@ -4,6 +4,7 @@ import 'package:locus_stalker/screens/group_screen.dart';
 import '../components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:location/location.dart';
+import '../services/auth.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -109,7 +110,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     'longitude': longitude,
                   });
                   if (user != null) {
-                    Navigator.pushNamed(context, GroupScreen.id);
+                    // popping the login screen to go back to welcome screen
+                    Navigator.pop(context);
+                    LocalUser(uid: user.user!.uid);
                   }
                 } catch (e) {
                   print(e);

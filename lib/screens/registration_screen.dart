@@ -5,6 +5,7 @@ import 'package:locus_stalker/constants.dart';
 import '../components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:location/location.dart';
+import '../services/auth.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -136,11 +137,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     'About': 'Available',
                     'photoUrl': kDefaultUrl,
                   });
-
-                  Navigator.pushNamed(
-                    context,
-                    GroupScreen.id,
-                  );
+                  // popping register screen to go back to welcome screen
+                  Navigator.pop(context);
+                  LocalUser(uid: newUser.user!.uid);
                 } catch (e) {
                   print(e);
                   ScaffoldMessenger.of(context).showSnackBar(
