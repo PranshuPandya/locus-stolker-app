@@ -16,6 +16,7 @@ class AuthService {
   }
 
   Stream<LocalUser?> get user {
+    // listen to authentication changes and return local user or null
     return _auth
         .authStateChanges()
         .map((User? user) => userFromFirebaseUser(user));

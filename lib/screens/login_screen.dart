@@ -110,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     'longitude': longitude,
                   });
                   if (user != null) {
+                    // popping the login screen to go back to welcome screen
                     Navigator.pop(context);
                     LocalUser(uid: user.user!.uid);
                   }

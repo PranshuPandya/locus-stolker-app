@@ -124,7 +124,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     email: email!,
                     password: password!,
                   );
-
                   await newUser.user!.updateDisplayName(userName);
 
                   CollectionReference users = _firestore.collection('users');
@@ -138,7 +137,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     'About': 'Available',
                     'photoUrl': kDefaultUrl,
                   });
-
+                  // popping register screen to go back to welcome screen
                   Navigator.pop(context);
                   LocalUser(uid: newUser.user!.uid);
                 } catch (e) {

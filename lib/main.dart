@@ -26,6 +26,7 @@ class LocusStalker extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Stream provider to listen to auth changes
     return StreamProvider<LocalUser?>.value(
       initialData: null,
       value: AuthService().user,
