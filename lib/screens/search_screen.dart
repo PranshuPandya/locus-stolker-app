@@ -218,7 +218,10 @@ class _SearchScreenState extends State<SearchScreen> {
                 decoration: InputDecoration(hintText: 'here'),
               ),
               actions: [
-                FlatButton(
+                ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black54,
+          ),
                   onPressed: () {
                     if (_selectedUserNames.length != 0 && _dialogBoxController.text != null && _dialogBoxController.text != '') {
                       Navigator.pop(contexta);
@@ -234,7 +237,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     }
                   },
                   child: Text('Make'),
-                  color: Colors.black54,
+                  
                 ),
               ],
             ),

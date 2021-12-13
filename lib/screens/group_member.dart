@@ -143,7 +143,10 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
         update: _update,
       ),
       bottomNavigationBar: BottomAppBar(
-        child: FlatButton(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black54,
+          ),
           onPressed: () {
             showDialog(
               context: context,
@@ -151,7 +154,10 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                 backgroundColor: Colors.grey.shade900,
                 title: Text('Leave Group'),
                 actions: [
-                  FlatButton(
+                  ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black54,
+          ),
                     onPressed: () async {
                       await groups.where('groupName', isEqualTo: widget.groupName).get().then((value) => {
                             value.docs.forEach((element) {
@@ -267,7 +273,10 @@ class GroupRectangle extends StatelessWidget {
               backgroundColor: Colors.grey.shade900,
               title: Text('Remove Member'),
               actions: [
-                FlatButton(
+                ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black54,
+          ),
                   onPressed: () async {
                     await groups.where('groupName', isEqualTo: groupName).get().then((value) => {
                           value.docs.forEach((element) {
