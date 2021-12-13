@@ -237,7 +237,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     }
                   },
                   child: Text('Make'),
-                  color: Colors.black54,
+                  
                 ),
               ],
             ),
