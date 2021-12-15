@@ -249,9 +249,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               actions: [
                 ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.black54,
-                  ),
+                  style: ElevatedButton.styleFrom(primary: Colors.black54,),
                   onPressed: () {
                     if (_selectedUserNames.length != 0 &&
                         _dialogBoxController.text != null &&
