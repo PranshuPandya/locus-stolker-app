@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 import 'package:locus_stalker/screens/group_member.dart';
-import 'package:locus_stalker/screens/login_screen.dart';
 import 'package:locus_stalker/screens/reset_password_screen.dart';
 import 'package:locus_stalker/screens/search_screen.dart';
-import 'package:location/location.dart';
-import 'package:locus_stalker/wrap.dart';
-import 'profile_screen.dart';
+
 import 'about_screen.dart';
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
+import 'profile_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -104,13 +103,16 @@ class _GroupScreenState extends State<GroupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       drawer: Drawer(
+        backgroundColor: Colors.blueGrey[800],
         child: ListView(
+          scrollDirection: Axis.vertical,
           children: [
             UserAccountsDrawerHeader(
               currentAccountPicture: GestureDetector(
                 child: CircleAvatar(
-                  backgroundColor: Colors.grey.shade800,
+                  backgroundColor: Colors.blueGrey[800],
                   child: profilePicUrl == null
                       ? Text(
                           userName[0].toUpperCase(),
@@ -234,20 +236,14 @@ class _GroupScreenState extends State<GroupScreen> {
                 ),
               ),
             ),
-            ListTile(
-              title: Text(
-                'Re-set password',
-                style: TextStyle(color: Colors.white),
-              ),
-              trailing: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, ResetPasswordScreen.id);
-                },
-                child: Icon(
-                  Icons.edit,
-                  color: Colors.white,
-                ),
-              ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 25.0, vertical: 8),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, ResetPasswordScreen.id);
+                  },
+                  child: Text('Re-set password')),
             ),
             ListTile(
               title: Text(
@@ -301,10 +297,62 @@ class _GroupScreenState extends State<GroupScreen> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 30,
+            ),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, AboutScreen.id);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'App info',
+                            style: TextStyle(),
+                          ),
+                          Icon(Icons.info_outline)
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 10),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await _auth.signOut();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Log-Out',
+                            style: TextStyle(),
+                          ),
+                          Icon(Icons.logout)
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[800],
         elevation: 15,
         leading: Builder(
           builder: (context) => IconButton(
@@ -320,7 +368,7 @@ class _GroupScreenState extends State<GroupScreen> {
         ),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
+              padding: EdgeInsets.only(right: 30.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
@@ -334,54 +382,15 @@ class _GroupScreenState extends State<GroupScreen> {
                   color: Colors.white,
                 ),
               )),
-          CustomPopupMenu(
-            child: Container(
-              child: Icon(Icons.more_vert, color: Colors.white),
-              padding: EdgeInsets.all(20),
-            ),
-            menuBuilder: () => ClipRRect(
-              borderRadius: BorderRadius.circular(5),
-              child: Container(
-                color: Colors.black12,
-                child: IntrinsicWidth(
-                  child: GestureDetector(
-                    onTap: () {
-                      _controller.hideMenu();
-                    },
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ListTile(
-                              onTap: () {
-                                _controller.hideMenu();
-                                Navigator.pushNamed(context, AboutScreen.id);
-                              },
-                              leading: Text("About")),
-                          ListTile(
-                            leading: Text("Log Out"),
-                            onTap: () async {
-                              _controller.hideMenu();
-                              await _auth.signOut();
-                            },
-                          )
-                        ]),
-                  ),
-                ),
-              ),
-            ),
-            pressType: PressType.singleClick,
-            controller: _controller,
-          ),
         ],
         title: Text(
           'Groups',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.black12,
       ),
       body: Groups(userName: userName),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.teal,
         onPressed: () async {
           await Navigator.pushNamed(
             context,
@@ -389,8 +398,10 @@ class _GroupScreenState extends State<GroupScreen> {
           );
         },
         child: Icon(
-          Icons.add,
+          Icons.group_add_outlined,
           color: Colors.white,
+          size: 40,
+          textDirection: TextDirection.rtl,
         ),
       ),
     );
@@ -421,12 +432,74 @@ class Groups extends StatelessWidget {
           final groupRectangle = GroupRectangle(groupName: groupName);
           groupRectangles.add(groupRectangle);
         }
-        return ListView.builder(
-          itemCount: groupRectangles.length,
-          itemBuilder: (context, index) {
-            return groupRectangles[index];
-          },
-        );
+        if (groupRectangles.length == 0)
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                  child: Image.asset(
+                    'images/no_members.png',
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      color: Colors.blueGrey[800],
+                      elevation: 10,
+                      shadowColor: Colors.black,
+                      child: Padding(
+                        padding: EdgeInsets.all(30),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "You don't have any group now, click on ",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                              TextSpan(
+                                text: 'add members icon',
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.teal[500],
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(
+                                text: ' to search for members.',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 30,
+              )
+            ],
+          );
+        else
+          return ListView.builder(
+            itemCount: groupRectangles.length,
+            itemBuilder: (context, index) {
+              return groupRectangles[index];
+            },
+          );
       },
     );
   }
@@ -450,6 +523,7 @@ class GroupRectangle extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.blueGrey,
           border: Border(
             bottom: BorderSide(
               width: 2.0,

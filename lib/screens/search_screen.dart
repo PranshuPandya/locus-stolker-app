@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 final _firestore = FirebaseFirestore.instance;
 CollectionReference groups = _firestore.collection('Groups');
@@ -32,8 +32,8 @@ class _SearchScreenState extends State<SearchScreen> {
     _selectedUserNames.clear();
     _username = loggedInUser!.displayName;
   }
-  
-  void _update(){
+
+  void _update() {
     setState(() {});
   }
 
@@ -65,8 +65,9 @@ class _SearchScreenState extends State<SearchScreen> {
           print('for $queryResultSet');
         }
         queryResultSet.forEach(
-              (element) {
-            if (element['userName'].startsWith(value) && element['userName'] != _username) {
+          (element) {
+            if (element['userName'].startsWith(value) &&
+                element['userName'] != _username) {
               setState(() {
                 tempSearchStore.add(element);
                 print('if else $tempSearchStore');
@@ -80,7 +81,8 @@ class _SearchScreenState extends State<SearchScreen> {
       print(' else $queryResultSet');
       tempSearchStore = [];
       queryResultSet.forEach((element) {
-        if (element['userName'].startsWith(value) && element['userName'] != _username) {
+        if (element['userName'].startsWith(value) &&
+            element['userName'] != _username) {
           setState(() {
             tempSearchStore.add(element);
             print('if else $tempSearchStore');
@@ -133,17 +135,17 @@ class _SearchScreenState extends State<SearchScreen> {
   bool _isLoading = false;
   var _dialogBoxController = TextEditingController();
 
-  List<Widget> wrapChip(){
+  List<Widget> wrapChip() {
     return _selectedUserNames
         .map((item) => _buildChip(item, Color(0xFFff6666)))
         .toList()
         .cast<Widget>();
   }
-  
-  Map<String,bool> addStatus(_selectedUser){
-    Map<String,bool> status = <String,bool>{};
-    for(var member in _selectedUser){
-      status.update(member, (value) => true,ifAbsent: () => true);
+
+  Map<String, bool> addStatus(_selectedUser) {
+    Map<String, bool> status = <String, bool>{};
+    for (var member in _selectedUser) {
+      status.update(member, (value) => true, ifAbsent: () => true);
     }
     return status;
   }
@@ -151,7 +153,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[800],
         title: TextField(
           decoration: InputDecoration(
             hintText: 'Search Member',
@@ -179,34 +183,60 @@ class _SearchScreenState extends State<SearchScreen> {
                 color: Colors.grey,
               ),
             )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
+          : (tempSearchStore.isEmpty)
+              ? Container(
+                  color: Colors.blueGrey[400],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 90, vertical: 80),
+                            child: Image.asset(
+                              'images/search.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Wrap(
-                        spacing: 6.0,
-                        runSpacing: 6.0,
-                        children: wrapChip(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      color: Colors.blueGrey,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Wrap(
+                            spacing: 6.0,
+                            runSpacing: 6.0,
+                            children: wrapChip(),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Divider(
-                  thickness: 1.0,
-                ),
-                Expanded(
-                    child: ListView(
-                      children: _userNames.map((e) => MemberRectangle(memberName: e['userName'],update: () => _update(),)).toList(),
-                    )
+                    SizedBox(
+                      height: 6,
                     ),
-              ],
-            ),
+                    Expanded(
+                        child: ListView(
+                      children: _userNames
+                          .map((e) => MemberRectangle(
+                                memberName: e['userName'],
+                                update: () => _update(),
+                              ))
+                          .toList(),
+                    )),
+                  ],
+                ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.teal,
         onPressed: () {
           showDialog(
             context: context,
@@ -218,23 +248,27 @@ class _SearchScreenState extends State<SearchScreen> {
                 decoration: InputDecoration(hintText: 'here'),
               ),
               actions: [
-                FlatButton(
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black54,
+                  ),
                   onPressed: () {
-                    if (_selectedUserNames.length != 0 && _dialogBoxController.text != null && _dialogBoxController.text != '') {
+                    if (_selectedUserNames.length != 0 &&
+                        _dialogBoxController.text != null &&
+                        _dialogBoxController.text != '') {
                       Navigator.pop(contexta);
-                      Navigator.pop(context,_dialogBoxController.text);
-                      if(!_selectedUserNames.contains(_username)){
+                      Navigator.pop(context, _dialogBoxController.text);
+                      if (!_selectedUserNames.contains(_username)) {
                         _selectedUserNames.add(_username!);
                       }
                       groups.add({
-                        'groupName' : _dialogBoxController.text,
-                        'users' : _selectedUserNames,
-                        'Status' : addStatus(_selectedUserNames),
+                        'groupName': _dialogBoxController.text,
+                        'users': _selectedUserNames,
+                        'Status': addStatus(_selectedUserNames),
                       });
                     }
                   },
                   child: Text('Make'),
-                  color: Colors.black54,
                 ),
               ],
             ),
@@ -242,6 +276,7 @@ class _SearchScreenState extends State<SearchScreen> {
         },
         child: Icon(
           Icons.check,
+          size: 30,
           color: Colors.white,
         ),
       ),
@@ -262,7 +297,7 @@ class _WrapSelectedUsersState extends State<WrapSelectedUsers> {
 }
 
 class MemberRectangle extends StatefulWidget {
-  MemberRectangle({required this.memberName,required this.update});
+  MemberRectangle({required this.memberName, required this.update});
   final String memberName;
   final VoidCallback update;
 
@@ -288,10 +323,11 @@ class _MemberRectangleState extends State<MemberRectangle> {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.blueGrey,
           border: Border(
             bottom: BorderSide(
               width: 2.0,
-              color: Colors.black12,
+              color: Colors.black38,
             ),
           ),
         ),
@@ -335,8 +371,8 @@ class _MemberRectangleState extends State<MemberRectangle> {
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                       padding: EdgeInsets.all(4.0),
-                      height: 50.0,
-                      width: 50.0,
+                      height: 40.0,
+                      width: 40.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(55),
@@ -344,8 +380,8 @@ class _MemberRectangleState extends State<MemberRectangle> {
                       child: Center(
                         child: Icon(
                           Icons.check,
-                          size: 30.0,
-                          color: Colors.black,
+                          size: 25.0,
+                          color: Colors.teal,
                         ),
                       ),
                     ),

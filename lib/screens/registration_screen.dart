@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:locus_stalker/screens/group_screen.dart';
-import 'package:locus_stalker/constants.dart';
-import '../components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:locus_stalker/constants.dart';
+
+import '../components/rounded_button.dart';
 import '../services/auth.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -61,6 +61,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
