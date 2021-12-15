@@ -151,8 +151,10 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
         update: _update,
       ),
       bottomNavigationBar: BottomAppBar(
-        elevation: 5,
-        child: TextButton(
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            primary: Colors.black54,
+          ),
           onPressed: () {
             showDialog(
               context: context,
@@ -161,7 +163,8 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                 backgroundColor: Colors.grey.shade900,
                 title: Text('Leave Group'),
                 actions: [
-                  TextButton(
+                  ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.black54,),
                     onPressed: () async {
                       await groups
                           .where('groupName', isEqualTo: widget.groupName)
@@ -285,8 +288,8 @@ class GroupRectangle extends StatelessWidget {
               actions: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.black54,
-                  ),
+            primary: Colors.black54,
+          ),
                   onPressed: () async {
                     await groups
                         .where('groupName', isEqualTo: groupName)
