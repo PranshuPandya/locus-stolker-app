@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 final _firestore = FirebaseFirestore.instance;
 CollectionReference groups = _firestore.collection('Groups');
@@ -179,7 +179,9 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[900],
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[800],
         title: TextField(
           decoration: InputDecoration(
             hintText: 'Search Member',
@@ -207,36 +209,57 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
                 color: Colors.grey,
               ),
             )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
+          : (temp.isEmpty)
+              ? Container(
+                  color: Colors.blueGrey[400],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 90, vertical: 80),
+                            child: Image.asset(
+                              'images/search.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Wrap(
-                      spacing: 6.0,
-                      runSpacing: 6.0,
-                      children: wrapChip(),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Wrap(
+                          spacing: 6.0,
+                          runSpacing: 6.0,
+                          children: wrapChip(),
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      height: 6,
+                    ),
+                    Expanded(
+                        child: ListView(
+                      children: temp
+                          .map((e) => MemberRectangle(
+                              memberName: e, update: () => _update()))
+                          .toList(),
+                    )),
+                  ],
                 ),
-                Divider(
-                  thickness: 1.0,
-                ),
-                Expanded(
-                    child: ListView(
-                  children: temp
-                      .map((e) => MemberRectangle(
-                          memberName: e, update: () => _update()))
-                      .toList(),
-                )),
-              ],
-            ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.teal,
         onPressed: () {
           showDialog(
             context: context,
@@ -280,6 +303,7 @@ class _AddMemberScreenState extends State<AddMemberScreen> {
         },
         child: Icon(
           Icons.check,
+          size: 30,
           color: Colors.white,
         ),
       ),
@@ -326,10 +350,11 @@ class _MemberRectangleState extends State<MemberRectangle> {
       },
       child: Container(
         decoration: BoxDecoration(
+          color: Colors.blueGrey,
           border: Border(
             bottom: BorderSide(
               width: 2.0,
-              color: Colors.black12,
+              color: Colors.black38,
             ),
           ),
         ),
@@ -373,8 +398,8 @@ class _MemberRectangleState extends State<MemberRectangle> {
                     padding: const EdgeInsets.all(10.0),
                     child: Container(
                       padding: EdgeInsets.all(4.0),
-                      height: 50.0,
-                      width: 50.0,
+                      height: 40.0,
+                      width: 40.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(55),
@@ -382,7 +407,7 @@ class _MemberRectangleState extends State<MemberRectangle> {
                       child: Center(
                         child: Icon(
                           Icons.check,
-                          size: 30.0,
+                          size: 25.0,
                           color: Colors.black,
                         ),
                       ),

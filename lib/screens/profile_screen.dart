@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:locus_stalker/constants.dart';
 
 final _firestore = FirebaseFirestore.instance;
@@ -86,6 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext bc) {
           return SafeArea(
             child: Container(
+              color: Colors.blueGrey[700],
               child: Wrap(
                 children: <Widget>[
                   ListTile(
@@ -113,7 +115,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[600],
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey[800],
         title: Text('Profile'),
       ),
       resizeToAvoidBottomInset: false,
@@ -184,6 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           Card(
+              color: Colors.teal[600],
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
                 leading: Icon(
@@ -200,6 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               )),
           Card(
+              color: Colors.teal[600],
               margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
               child: ListTile(
                 leading: Icon(

@@ -1,10 +1,12 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:location/location.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:collection';
+
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
@@ -79,7 +81,9 @@ class _MapScreenState extends State<MapScreen> {
           child: Container(
               height: 100.0,
               width: 150.0,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(5.0), color: Colors.white),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: Colors.white),
               child: Center(
                   child: Text(
                 username.toString(),
@@ -96,8 +100,11 @@ class _MapScreenState extends State<MapScreen> {
     print(latitude);
     print(longitude);
     _mapController
-        .animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: LatLng(latitude, longitude), zoom: 17.0, bearing: 90.0, tilt: 45.0)))
+        .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+            target: LatLng(latitude, longitude),
+            zoom: 17.0,
+            bearing: 90.0,
+            tilt: 45.0)))
         .then((val) {
       if (_userNames!.contains(username)) {
         _mapController.hideMarkerInfoWindow(MarkerId(username));
@@ -106,14 +113,17 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> getGroupUser() async {
-    await groups.where('groupName', isEqualTo: widget.groupName).get().then((querySnapshot) => {
-          setState(() {
-            querySnapshot.docs.forEach((element) {
-              _userNames = element.get('users');
-              print(_userNames);
+    await groups
+        .where('groupName', isEqualTo: widget.groupName)
+        .get()
+        .then((querySnapshot) => {
+              setState(() {
+                querySnapshot.docs.forEach((element) {
+                  _userNames = element.get('users');
+                  print(_userNames);
+                });
+              })
             });
-          })
-        });
     return getUserLocations();
   }
 
@@ -135,9 +145,11 @@ class _MapScreenState extends State<MapScreen> {
     groupStream = users.snapshots().listen((querySnapshot) {
       querySnapshot.docs.forEach((document) {
         if (_userNames!.contains(document.get('userName'))) {
-          latitudes.update(document.get('userName'), (value) => document.get('latitude'),
+          latitudes.update(
+              document.get('userName'), (value) => document.get('latitude'),
               ifAbsent: () => document.get('latitude'));
-          longitudes.update(document.get('userName'), (value) => document.get('longitude'),
+          longitudes.update(
+              document.get('userName'), (value) => document.get('longitude'),
               ifAbsent: () => document.get('longitude'));
 
           if (mounted) {
@@ -146,7 +158,8 @@ class _MapScreenState extends State<MapScreen> {
         }
       });
       if (latitudes[currentUser] != null && longitudes[currentUser] != null) {
-        zoomInMarker(currentUser, latitudes[currentUser], longitudes[currentUser]);
+        zoomInMarker(
+            currentUser, latitudes[currentUser], longitudes[currentUser]);
       }
     });
   }
@@ -219,7 +232,11 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Map')),
+      backgroundColor: Colors.teal,
+      appBar: AppBar(
+        title: Text('Map'),
+        backgroundColor: Colors.blueGrey[800],
+      ),
       body: Stack(
         children: <Widget>[
           Container(
@@ -231,8 +248,11 @@ class _MapScreenState extends State<MapScreen> {
                         _mapController = controller;
                       },
                       initialCameraPosition: CameraPosition(
-                        target: LatLng(latitudes[_auth.currentUser!.displayName]!.toDouble(),
-                            longitudes[_auth.currentUser!.displayName]!.toDouble()),
+                        target: LatLng(
+                            latitudes[_auth.currentUser!.displayName]!
+                                .toDouble(),
+                            longitudes[_auth.currentUser!.displayName]!
+                                .toDouble()),
                         zoom: 12,
                       ),
                       markers: initMarkers(_userNames, latitudes, longitudes),
@@ -240,11 +260,40 @@ class _MapScreenState extends State<MapScreen> {
                       myLocationButtonEnabled: true,
                       mapType: widget.mapType,
                     )
-                  : Center(
-                      child: Text(
-                      'Loading.. Please wait..',
-                      style: TextStyle(fontSize: 20.0),
-                    ))),
+                  : Container(
+                      color: Colors.blueGrey[600],
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 90, vertical: 80),
+                                child: Image.asset(
+                                  'images/map_loading.png',
+                                ),
+                              ),
+                            ),
+                          ),
+                          Flexible(
+                            child: AnimatedTextKit(
+                              totalRepeatCount: 20,
+                              animatedTexts: [
+                                WavyAnimatedText(
+                                  'Loading...',
+                                  textStyle: TextStyle(
+                                    color: Colors.tealAccent[800],
+                                    fontSize: 30.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )),
           Positioned(
             child: Container(
               height: 125.0,
