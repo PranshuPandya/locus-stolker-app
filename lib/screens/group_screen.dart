@@ -371,9 +371,9 @@ class _GroupScreenState extends State<GroupScreen> {
               padding: EdgeInsets.only(right: 30.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
+                  Navigator.pushReplacement(
                     context,
-                    SearchScreen.id,
+                    MaterialPageRoute(builder: (context) => SearchScreen()),
                   );
                 },
                 child: Icon(
@@ -392,9 +392,9 @@ class _GroupScreenState extends State<GroupScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.teal,
         onPressed: () async {
-          await Navigator.pushNamed(
+          await Navigator.pushReplacement(
             context,
-            SearchScreen.id,
+            MaterialPageRoute(builder: (context) => SearchScreen()),
           );
         },
         child: Icon(
