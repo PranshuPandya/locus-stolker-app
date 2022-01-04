@@ -19,7 +19,14 @@ import 'package:locus_stalker/wrap.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyD-K88Z24kXPbtd0syYX_Y48yjOZqaAvX4",
+        appId: "1:113732009876:web:33817868d64193dd1d1981",
+        messagingSenderId: "113732009876",
+        projectId: "locus-e64aa"
+    ),
+  );
   runApp(LocusStalker());
 }
 
