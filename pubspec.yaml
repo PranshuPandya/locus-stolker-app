@@ -28,6 +28,7 @@ dependencies:
   shared_preferences: ^2.0.6
   url_launcher: ^6.0.17
   video_player: ^2.1.10
+  wiredash: ^0.7.0+1
 
 dev_dependencies:
   flutter_test:
