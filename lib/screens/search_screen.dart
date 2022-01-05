@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:locus_stalker/screens/group_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 CollectionReference groups = _firestore.collection('Groups');
@@ -263,6 +264,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         'groupName': _dialogBoxController.text,
                         'users': _selectedUserNames,
                         'Status': addStatus(_selectedUserNames),
+                      });
+                      Future.delayed(Duration.zero, () {
+                        Navigator.pushNamed(
+                          context,
+                          GroupScreen.id,
+                        );
                       });
                     }
                   },

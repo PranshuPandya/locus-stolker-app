@@ -7,6 +7,7 @@ import 'package:locus_stalker/screens/group_member.dart';
 import 'package:locus_stalker/screens/reset_password_screen.dart';
 import 'package:locus_stalker/screens/search_screen.dart';
 import 'dart:math';
+import 'package:wiredash/wiredash.dart';
 import 'about_screen.dart';
 import 'profile_screen.dart';
 
@@ -313,6 +314,26 @@ class _GroupScreenState extends State<GroupScreen> {
                         vertical: 4.0, horizontal: 10),
                     child: ElevatedButton(
                       onPressed: () {
+                        Wiredash.of(context)?.show();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Report a bug',
+                            style: TextStyle(),
+                          ),
+                          Icon(Icons.info_outline)
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 4.0, horizontal: 10),
+                    child: ElevatedButton(
+                      onPressed: () {
                         Navigator.pushNamed(context, AboutScreen.id);
                       },
                       child: Row(
@@ -374,9 +395,9 @@ class _GroupScreenState extends State<GroupScreen> {
               padding: EdgeInsets.only(right: 30.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(
+                  Navigator.pushReplacement(
                     context,
-                    SearchScreen.id,
+                    MaterialPageRoute(builder: (context) => SearchScreen()),
                   );
                 },
                 child: Icon(
@@ -395,9 +416,9 @@ class _GroupScreenState extends State<GroupScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.teal,
         onPressed: () async {
-          await Navigator.pushNamed(
+          await Navigator.pushReplacement(
             context,
-            SearchScreen.id,
+            MaterialPageRoute(builder: (context) => SearchScreen()),
           );
         },
         child: Icon(

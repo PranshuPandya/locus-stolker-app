@@ -7,6 +7,7 @@ import 'package:locus_stalker/screens/welcome_screen.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:locus_stalker/services/auth.dart';
+import 'package:wiredash/wiredash.dart';
 import 'screens/map_screen.dart';
 import 'screens/reset_password_screen.dart';
 import 'screens/search_screen.dart';
@@ -19,38 +20,52 @@ import 'package:locus_stalker/wrap.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyD-K88Z24kXPbtd0syYX_Y48yjOZqaAvX4",
+        appId: "1:113732009876:web:33817868d64193dd1d1981",
+        messagingSenderId: "113732009876",
+        projectId: "locus-e64aa"
+    ),
+  );
   runApp(LocusStalker());
 }
 
 class LocusStalker extends StatelessWidget {
   // This widget is the root of your application.
+  final _navigatorKey = GlobalKey<NavigatorState>();
   @override
   Widget build(BuildContext context) {
     // Stream provider to listen to auth changes
     return StreamProvider<LocalUser?>.value(
       initialData: null,
       value: AuthService().user,
-      child: MaterialApp(
-        theme: ThemeData.dark().copyWith(
-          textTheme: TextTheme(
-            bodyText1: TextStyle(color: Colors.black54),
+      child: Wiredash(
+        projectId: "locus-stalker-jod8a3g",
+        secret: "PKOguW3RyQiIAvV6rlofmHBRMKbBwkLs",
+        navigatorKey: _navigatorKey,
+        child: MaterialApp(
+          navigatorKey: _navigatorKey,
+          theme: ThemeData.dark().copyWith(
+            textTheme: TextTheme(
+              bodyText1: TextStyle(color: Colors.black54),
+            ),
           ),
+          home: SplashScreen(),
+          routes: {
+            Wrapper.id: (context) => Wrapper(),
+            WelcomeScreen.id: (context) => WelcomeScreen(),
+            LoginScreen.id: (context) => LoginScreen(),
+            RegistrationScreen.id: (context) => RegistrationScreen(),
+            GroupScreen.id: (context) => GroupScreen(),
+            MapScreen.id: (context) => MapScreen(),
+            ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
+            SearchScreen.id: (context) => SearchScreen(),
+            GroupMemberScreen.id: (context) => GroupMemberScreen(),
+            AboutScreen.id: (context) => AboutScreen(),
+            ProfileScreen.id: (context) => ProfileScreen(),
+          },
         ),
-        home: SplashScreen(),
-        routes: {
-          Wrapper.id: (context) => Wrapper(),
-          WelcomeScreen.id: (context) => WelcomeScreen(),
-          LoginScreen.id: (context) => LoginScreen(),
-          RegistrationScreen.id: (context) => RegistrationScreen(),
-          GroupScreen.id: (context) => GroupScreen(),
-          MapScreen.id: (context) => MapScreen(),
-          ResetPasswordScreen.id: (context) => ResetPasswordScreen(),
-          SearchScreen.id: (context) => SearchScreen(),
-          GroupMemberScreen.id: (context) => GroupMemberScreen(),
-          AboutScreen.id: (context) => AboutScreen(),
-          ProfileScreen.id: (context) => ProfileScreen(),
-        },
       ),
     );
   }
