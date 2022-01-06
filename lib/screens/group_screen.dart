@@ -6,8 +6,8 @@ import 'package:location/location.dart';
 import 'package:locus_stalker/screens/group_member.dart';
 import 'package:locus_stalker/screens/reset_password_screen.dart';
 import 'package:locus_stalker/screens/search_screen.dart';
+import 'dart:math';
 import 'package:wiredash/wiredash.dart';
-
 import 'about_screen.dart';
 import 'profile_screen.dart';
 
@@ -109,6 +109,9 @@ class _GroupScreenState extends State<GroupScreen> {
         backgroundColor: Colors.blueGrey[800],
         child: ListView(
           scrollDirection: Axis.vertical,
+          padding: EdgeInsets.only(
+            bottom: max(MediaQuery.of(context).viewInsets.bottom - 180, 0),
+          ),
           children: [
             UserAccountsDrawerHeader(
               currentAccountPicture: GestureDetector(
